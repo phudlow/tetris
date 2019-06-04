@@ -1,3 +1,6 @@
 body {
-    background-color: red;
+    & {
+        font-size: 32px;
+    }
+    background-color: salmon;
 }

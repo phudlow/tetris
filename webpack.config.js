@@ -1,27 +1,62 @@
 const path = require('path');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
+const args = require('minimist')(process.argv.slice(2));
+const devMode = args.mode === 'development';
 
-module.exports = {
-    entry: './app/index.js',
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const common = {
+    entry: {
+        index: path.resolve(__dirname, 'app/index.js')
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.bundle.js'
+        filename: devMode ? '[name].js' : '[name].[contenthash].js'
     },
     module: {
         rules: [
-            { test: /\.js$/, use: 'babel-loader' },
-            { test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] }
+            { test: /\.js$/, use: 'babel-loader' }
         ]
     },
     plugins: [
-        new HTMLWebpackPlugin({
-            template: './app/index.html'
-        }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.ProgressPlugin(),
+        new CleanWebpackPlugin(),
+        new HTMLWebpackPlugin({ template: path.resolve(__dirname, 'app/index.html') })
     ],
+    watchOptions: {
+        ignored: ['node_modules']
+    }
+};
+
+const development = {
+    devtool: 'inline-source-map', // replace with 'eval-source-map', if build times become too long
     devServer: {
-        contentBase: './dist',
+        contentBase: './dist'
     },
-    devtool: 'eval-source-map',
-}
+    module: {
+        rules: [
+            { test: /\.scss$/, use: [
+                MiniCssExtractPlugin.loader,
+                { loader: 'css-loader',  options: { sourceMap: true } },
+                { loader: 'sass-loader', options: { sourceMap: true } }
+            ]}
+        ]
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new MiniCssExtractPlugin({ filename: '[name].css' })
+    ]
+};
+
+const production = {
+    module: {
+        rules: [
+            { test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] }
+        ]
+    }
+};
+
+module.exports = merge(common, devMode ? development : production);

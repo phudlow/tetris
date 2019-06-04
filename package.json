@@ -9,8 +9,9 @@
     ]
   },
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --open --mode development"
+    "build": "webpack --mode=production",
+    "watch": "webpack --watch --mode=development",
+    "start": "webpack-dev-server --open --mode=development"
   },
   "keywords": [],
   "author": "",
