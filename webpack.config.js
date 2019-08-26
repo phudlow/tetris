@@ -6,11 +6,10 @@ const devMode = args.mode === 'development';
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const common = {
     entry: {
-        index: path.resolve(__dirname, 'app/index.js')
+        index: path.resolve(__dirname, 'src/index.js')
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -18,13 +17,15 @@ const common = {
     },
     module: {
         rules: [
-            { test: /\.js$/, use: 'babel-loader' }
+            { test: /\.(js|jsx)$/, use: 'babel-loader' }
         ]
     },
     plugins: [
         new webpack.ProgressPlugin(),
         new CleanWebpackPlugin(),
-        new HTMLWebpackPlugin({ template: path.resolve(__dirname, 'app/index.html') })
+        new HTMLWebpackPlugin({
+            template: path.resolve(__dirname, 'src/index.html')
+        })
     ],
     watchOptions: {
         ignored: ['node_modules']
@@ -32,31 +33,14 @@ const common = {
 };
 
 const development = {
-    devtool: 'inline-source-map', // replace with 'eval-source-map', if build times become too long
+    // devtool: 'inline-source-map', // replace with 'eval-source-map', if build times become too long
+    devtool: 'eval-source-map',
     devServer: {
         contentBase: './dist'
     },
-    module: {
-        rules: [
-            { test: /\.scss$/, use: [
-                MiniCssExtractPlugin.loader,
-                { loader: 'css-loader',  options: { sourceMap: true } },
-                { loader: 'sass-loader', options: { sourceMap: true } }
-            ]}
-        ]
-    },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new MiniCssExtractPlugin({ filename: '[name].css' })
-    ]
+    // plugins: [ new webpack.HotModuleReplacementPlugin() ]
 };
 
-const production = {
-    module: {
-        rules: [
-            { test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] }
-        ]
-    }
-};
+const production = {};
 
 module.exports = merge(common, devMode ? development : production);
