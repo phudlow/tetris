@@ -50,7 +50,6 @@ export default class Tetris {
         clearInterval(this.timer);
     }
     on(ev, fn) {
-
         if (!this.eventTypes.includes(ev)) {
             const types = Object.keys(this.subscribers).map(evt => ` "${evt}"`);
             throw new Error(`Cannot subscribe to "${ev}".  Event must be one of type:${types}`);
@@ -170,6 +169,8 @@ export default class Tetris {
         const [ row, col ] = position;
         const layout = piece.layouts[rotation % piece.layouts.length];
         const updatedBoard = this.placedBoard.map(row => row.slice());
+        const originalPosition = row === 0 && col === 3;
+        let gameLost = false;
 
         // Apply layout from bottom-left of layout first
         //     [C, D, E, F]
@@ -186,13 +187,17 @@ export default class Tetris {
 
                 if (pieceBlock) {
 
-                    // Collision!
+                    // Collision! (with either a placed block or the border)
                     if (placedBlock || typeof placedBlock === 'undefined') {
-                        if (row === 0 && col === 3) {
-                            this.end();
+
+                        // Collision occurred at original position: Game Over.
+                        // Still draw piece on empty spaces.
+                        if (originalPosition) {
+                            gameLost = true;
+                        }
+                        else {
                             return false;
                         }
-                        return false;
                     }
 
                     // Put pieceBlock at empty space
@@ -201,6 +206,9 @@ export default class Tetris {
                     }
                 }
             }
+        }
+        if (gameLost) {
+            this.end();
         }
         return updatedBoard;
     }
