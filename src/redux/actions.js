@@ -12,9 +12,9 @@ export const gameStatusChange = status => {
     }
 }
 
-export const scored = score => {
+export const rowFill = rows => {
     return {
-        type: 'SCORED',
-        payload: score
+        type: 'ROW_FILL',
+        payload: rows
     }
 }

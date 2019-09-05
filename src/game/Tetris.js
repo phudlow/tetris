@@ -11,6 +11,7 @@ export default class Tetris {
     constructor(options) {
         this.options = options;
 
+        this.gameSpeed = options.gameSpeed;
         this.subscribers = {
             'boardchange': [],
             'rowfill': [],
@@ -40,7 +41,7 @@ export default class Tetris {
             }
         }
         this.movePiece();
-        this.setTimer(this.options.gameSpeed);
+        this.setTimer(this.gameSpeed);
     }
     setTimer(interval = 500) {
         this.timer = setInterval(this.movePiece.bind(this, 'down'), interval);
@@ -48,6 +49,7 @@ export default class Tetris {
     end() {
         this.emit('end');
         clearInterval(this.timer);
+        this.timer = null;
     }
     on(ev, fn) {
         if (!this.eventTypes.includes(ev)) {
@@ -76,9 +78,21 @@ export default class Tetris {
             this.subscribers[ev] = this.subscribers.filter(sub => sub !== subscriber);
         }
     }
+    pause() {
+        clearInterval(this.timer);
+        this.timer = null;
+    }
+    unpause() {
+        this.setTimer(this.gameSpeed);
+    }
 
-    /** @param {"left"|"right"|"down"|"rotate"} [dir] How to move the piece */
+    /** @param {"left"|"right"|"down"|"rotate-clockwise"|"rotate-counterclockwise"} [dir] How to move the piece */
     movePiece(dir) {
+
+        if (!this.timer) {
+            return;
+        }
+
         const newPiece = {
             ...this.currentPiece,
             position: [this.currentPiece.position[0], this.currentPiece.position[1]],
@@ -95,8 +109,11 @@ export default class Tetris {
             case "down":
                 newPiece.position[0]++;
                 break;
-            case "rotate":
+            case "rotate-clockwise":
                 newPiece.rotation++;
+                break;
+            case "rotate-counterclockwise":
+                newPiece.rotation--;
                 break;
             default:
                 break;
@@ -134,7 +151,7 @@ export default class Tetris {
             fullRows.forEach(() => newBoard.unshift((new Array(this.options.width).fill(0))) );
 
             this.currentBoard = newBoard;
-            this.emit('fullrows', fullRows);
+            this.emit('rowfill', fullRows);
             this.emit('boardchange', this.currentBoard);
         }
     }
@@ -167,16 +184,17 @@ export default class Tetris {
     getUpdatedBoard(piece, board) {
         const { value, position, rotation } = piece;
         const [ row, col ] = position;
-        const layout = piece.layouts[rotation % piece.layouts.length];
+        const pieceIdx = (piece.layouts.length + rotation % piece.layouts.length - 1) % piece.layouts.length;
+        const layout = piece.layouts[pieceIdx];
         const updatedBoard = this.placedBoard.map(row => row.slice());
         const originalPosition = row === 0 && col === 3;
         let gameLost = false;
 
         // Apply layout from bottom-left of layout first
-        //     [C, D, E, F]
-        //     [8, 9, A, B]
-        //     [4, 5, 6, 7]
-        // --> [0, 1, 2, 3]
+        //           [C, D, E, F] <-- end
+        //           [8, 9, A, B]
+        //           [4, 5, 6, 7]
+        // start --> [0, 1, 2, 3]
         //
         // The position (row and col) represents where "C" in the diagram above is positioned on the board
         let placedBlock, pieceBlock;

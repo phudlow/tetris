@@ -32,6 +32,8 @@ function Results(props) {
                 <strong>Score:</strong> {props.score}
                 <br/><br/>
                 <button onClick={props.gameStatusChange.bind(null, null)}>OK</button>
+                <br/><br/>
+                <button onClick={props.restart}>Restart</button>
             </Modal>
         </ModalContainer>
     );
@@ -46,7 +48,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        gameStatusChange: status => dispatch(gameStatusChange(status)),
+        gameStatusChange: status => dispatch(gameStatusChange(status))
     };
 };
 
