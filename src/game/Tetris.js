@@ -3,11 +3,10 @@
  * @param {number=18} options.height The height of the game board
  * @param {number=10} options.width The width of the game board
  * @param {object} options.pieces
- * @param {boolean[][]} options.pieces.layouts
- * Array of 2-d arrays of booleans describing the layout of all pieces at each of their rotations
+ * @param {boolean[][]} options.pieces.layouts Array of 2-d arrays of booleans describing the layout of all pieces at each of their rotations
  * @param {object} keybinds Object containing keybinds for all of the actions in the game: left, right, down, rotate
  */
-export default class Tetris {
+class Tetris {
     constructor(options) {
         this.options = options;
 
@@ -234,3 +233,5 @@ export default class Tetris {
         return (new Array(height)).fill((new Array(width)).fill(0));
     }
 }
+
+export default Tetris;

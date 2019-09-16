@@ -5,7 +5,7 @@ import { boardChange, gameStatusChange, rowFill } from '../redux/actions';
 import Board from './Board';
 import Results from './Results';
 
-import pieces from '../game/pieces';
+import pieces from '../game/standardPieces';
 import Tetris from '../game/Tetris';
 
 class Game extends Component {
