@@ -9,7 +9,7 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 const common = {
     entry: {
-        index: path.resolve(__dirname, 'src/index.js')
+        index: path.resolve(__dirname, 'demo/index.js')
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -24,7 +24,7 @@ const common = {
         new webpack.ProgressPlugin(),
         new CleanWebpackPlugin(),
         new HTMLWebpackPlugin({
-            template: path.resolve(__dirname, 'src/index.html')
+            template: path.resolve(__dirname, 'demo/index.html')
         })
     ],
     watchOptions: {

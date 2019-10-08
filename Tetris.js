@@ -22,7 +22,6 @@ class Tetris {
      * @param {Number} [options.width=10] The width of the game board.
      * @param {Tetris#piece[]} options.pieces
      * @param {Number} options.gameSpeed The speed of the game loop in milliseconds.
-     * @param {Object} keybinds Object containing keybinds for all of the actions in the game: left, right, down, rotate-clockwise, rotate-counterclockwise.
      */
     constructor(options) {
         this.options = options;

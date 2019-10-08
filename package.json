@@ -20,8 +20,8 @@
     "webpack:build": "webpack --mode=production",
     "webpack:watch": "webpack --watch --mode=development",
     "webpack-dev-server": "webpack-dev-server --open --mode=development",
-    "jsdoc": "jsdoc ./src/game/Tetris.js",
-    "jsdoc-private": "jsdoc --private ./src/game/Tetris.js"
+    "jsdoc": "jsdoc ./Tetris.js",
+    "jsdoc-private": "jsdoc --private ./Tetris.js"
   },
   "repository": {
     "type": "git",
