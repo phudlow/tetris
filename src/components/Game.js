@@ -49,17 +49,17 @@ class Game extends Component {
         // Pause the game
         if (keybinds[e.key] === 'pause') {
             if (this.props.gameStatus === 'paused') {
-                this.game.unpause();
+                this.game.start();
                 this.props.gameStatusChange('running');
             }
             else {
-                this.game.pause();
+                this.game.stop();
                 this.props.gameStatusChange('paused');
             }
         }
     }
     start() {
-        this.game.start();
+        this.game.begin();
         this.props.gameStatusChange("running");
     }
     restart() {
