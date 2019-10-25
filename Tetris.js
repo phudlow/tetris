@@ -188,6 +188,10 @@ class Tetris {
      * @param {Boolean} dropping True to make the current piece drop.  False to stop dropping on the current piece.
      */
     setDropping(dropping) {
+        if (!this.timer) {
+            return;
+        }
+
         if (this.dropSpeed === 0) {
             // Do instant drop.  Make own method to effeciently detect how the piece should be dropped
             return;
@@ -218,7 +222,6 @@ class Tetris {
             ...this.currentPiece,
             position: [this.currentPiece.position[0], this.currentPiece.position[1]],
         };
-        let newBoard = false;
 
         switch (direction) {
             case "left":
@@ -240,17 +243,20 @@ class Tetris {
                 break;
         }
 
-        newBoard = this.getUpdatedBoard(newPiece, this.placedBoard.map(row => row.slice()));
+        const { board, hasCollision } = this.getUpdatedBoard(newPiece, this.placedBoard.map(row => row.slice()));
+        if (hasCollision) {
 
-        if (!newBoard) {
+            // If piece collided at starting position, Game Over
+            if (newPiece.position[0] === 0 && newPiece.position[1] === 3) {
+                this.end()
+            }
             if (direction === "down") {
                 this.placePiece();
+                return;
             }
-            return;
         }
-
         this.currentPiece = newPiece;
-        this.currentBoard = newBoard;
+        this.currentBoard = board;
         this.emit('boardchange', this.currentBoard);
     }
 
@@ -316,15 +322,17 @@ class Tetris {
     getRandomPiece(notIdx) {
         const pieces = this.options.pieces;
         let index = notIdx;
+        let layouts;
 
         // If notIdx passed, pick a different piece than the one at notIdx
         while (index === notIdx) {
             index = Math.floor(Math.random() * pieces.length);
         }
- 
+        layouts = pieces[index].layouts;
+
         return {
             value: index + 1,
-            position: [0, 3],
+            position: [0, Math.floor(this.options.width / 2) - Math.floor(layouts[0].length) / 2],
             rotation: 0,
             layouts: pieces[index].layouts
         };
@@ -336,15 +344,16 @@ class Tetris {
      * @private
      * @param {Tetris#piece} piece The current piece to be drawn on the board.
      * @param {Tetris#board} board Current board containing only placed pieces.
-     * @return {Tetris#board|false} Returns the [board]{@link Tetris#board} with currentPiece drawn, or false if the new board would result in a collision.
+     * @return {Object} result
+     * @param {Tetris#board|false} result.board Returns the [board]{@link Tetris#board} with currentPiece drawn.
+     * @param {Boolean} result.hasCollision True if the updated board resulted in a collision.
      */
     getUpdatedBoard(piece, board) {
         const { value, position, rotation } = piece;
         const [ row, col ] = position;
         const pieceIdx = (piece.layouts.length + rotation % piece.layouts.length) % piece.layouts.length;
         const layout = piece.layouts[pieceIdx];
-        const originalPosition = row === 0 && col === 3;
-        let gameLost = false;
+        let hasCollision = false;
 
         // Apply layout from bottom-left of layout first:
         //           [C, D, E, F] <-- end
@@ -363,15 +372,7 @@ class Tetris {
 
                     // Collision! (with either a placed block or the border)
                     if (placedBlock || typeof placedBlock === 'undefined') {
-
-                        // Collision occurred at original position: Game Over.
-                        // Still draw piece on empty spaces.
-                        if (originalPosition) {
-                            gameLost = true;
-                        }
-                        else {
-                            return false;
-                        }
+                        hasCollision = true;
                     }
 
                     // Put pieceBlock at empty space
@@ -381,10 +382,7 @@ class Tetris {
                 }
             }
         }
-        if (gameLost) {
-            this.end();
-        }
-        return board;
+        return { board, hasCollision };
     }
 
     /**
