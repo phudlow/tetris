@@ -3,7 +3,7 @@ body {
     margin: 30px;
 }
 
-canvas {
+canvas, .piece-preview {
     border-image-source: url('./static/background.png');
     border-image-slice: 20;
     border-image-width: 20px;

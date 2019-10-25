@@ -6,6 +6,11 @@ function reducer(state, action) {
                 board: action.payload,
                 count: ++state.count
             }
+        case 'NEXT_PIECE':
+            return {
+                ...state,
+                nextPiece: action.payload
+            }
         case 'GAME_STATUS_CHANGE':
             const newState = {
                 ...state,

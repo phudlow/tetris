@@ -3,6 +3,7 @@ import reducer from './reducer';
 
 const initialStore = {
     board: null,
+    nextPiece: null,
     score: 0,
     rows: 0,
     level: 1,

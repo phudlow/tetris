@@ -31,6 +31,7 @@ class Tetris {
             'boardchange': [],
             'rowfill': [],
             'end': [],
+            'nextpiece': [],
         };
         this.eventTypes = Object.keys(this.subscribers);
 
@@ -68,6 +69,7 @@ class Tetris {
             }
         }
         this.setTimer(this.gameSpeed);
+        this.emit('nextpiece', this.nextPiece.layouts[0]);
         this.movePiece();
     }
 
@@ -105,8 +107,15 @@ class Tetris {
 
     /**
      * Fires when there is a change in the board layout.
-     * Views which implement Tetris should redraw when this event is fired.
-     * @event Tetris#boardchange 
+     * Views which implement the Tetris game board should redraw when this event is fired.
+     * @event Tetris#boardchange
+     * @type {Tetris#board}
+     */
+
+    /**
+     * Fires when there is a change in the next piece.  Occurs when a piece is placed.
+     * Views which implement next piece preview should redraw when this event is fired.
+     * @event Tetris#nextpiece
      * @type {Tetris#board}
      */
 
@@ -267,6 +276,8 @@ class Tetris {
 
         this.currentPiece = this.nextPiece;
         this.nextPiece = this.getRandomPiece(this.currentPiece.value - 1);
+
+        this.emit('nextpiece', this.nextPiece.layouts[0]);
 
         this.placedBoard = this.currentBoard;
         this.movePiece();
