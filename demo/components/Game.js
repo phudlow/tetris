@@ -16,6 +16,7 @@ class Game extends Component {
         const gameOptions = {
             height: 18,
             width: 10,
+            dropSpeed: 0,
             pieces
         };
 

@@ -28,7 +28,7 @@ class Tetris {
         this.options = options;
 
         this.gameSpeed = options.gameSpeed || 500;
-        this.dropSpeed = options.dropSpeed || this.gameSpeed / 10;
+        this.dropSpeed = typeof options.dropSpeed === 'number' ? options.dropSpeed : this.gameSpeed / 10;
         this.isDropping = false;
 
         this.subscribers = {
@@ -191,12 +191,6 @@ class Tetris {
         if (!this.timer) {
             return;
         }
-
-        if (this.dropSpeed === 0) {
-            // Do instant drop.  Make own method to effeciently detect how the piece should be dropped
-            return;
-        }
-
         this.isDropping = dropping;
         this.setTimer(dropping ? this.dropSpeed : this.gameSpeed);
     }
@@ -244,18 +238,31 @@ class Tetris {
         }
 
         const { board, hasCollision } = this.getUpdatedBoard(newPiece, this.placedBoard.map(row => row.slice()));
+
         if (hasCollision) {
 
             // If piece collided at starting position, Game Over
             if (newPiece.position[0] === 0 && newPiece.position[1] === 3) {
                 this.end()
             }
-            if (direction === "down") {
+            // Collided while going down, place piece
+            else if (direction === "down") {
                 this.placePiece();
                 return;
             }
+            // Collided otherwise, keep board the same
+            else {
+                return;
+            }
         }
+
         this.currentPiece = newPiece;
+
+        // Doing hard drop => Immediately move piece down until collision
+        if (this.isDropping && this.options.gameSpeed === 0) {
+            this.movePiece("down");
+        }
+
         this.currentBoard = board;
         this.emit('boardchange', this.currentBoard);
     }
@@ -302,14 +309,16 @@ class Tetris {
      * @private
      */
     placePiece() {
+        this.setDropping(false);
+
         this.handleFullRows();
 
         this.currentPiece = this.nextPiece;
         this.nextPiece = this.getRandomPiece(this.currentPiece.value - 1);
-
         this.emit('nextpiece', this.nextPiece.layouts[0]);
 
         this.placedBoard = this.currentBoard;
+
         this.movePiece();
     }
 
