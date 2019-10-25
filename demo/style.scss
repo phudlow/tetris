@@ -1,5 +1,4 @@
 body {
-    background-color: lightgrey;
     margin: 30px;
 }
 
@@ -11,4 +10,6 @@ canvas, .piece-preview {
     border-image-repeat: repeat;
 
     border-style: inset;
+
+    background-color: lightgrey;
 }

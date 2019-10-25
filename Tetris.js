@@ -21,12 +21,16 @@ class Tetris {
      * @param {Number} [options.height=18] The height of the game board.
      * @param {Number} [options.width=10] The width of the game board.
      * @param {Tetris#piece[]} options.pieces
-     * @param {Number} options.gameSpeed The speed of the game loop in milliseconds.
+     * @param {Number} [options.gameSpeed=500] The speed of the game loop in milliseconds.
+     * @param {Number} [options.dropSpeed] How fast the game piece falls when a drop is initiated.  If 0 is passed, pieces will "hard drop", falling instantly.
      */
     constructor(options) {
         this.options = options;
 
-        this.gameSpeed = options.gameSpeed;
+        this.gameSpeed = options.gameSpeed || 500;
+        this.dropSpeed = options.dropSpeed || this.gameSpeed / 10;
+        this.isDropping = false;
+
         this.subscribers = {
             'boardchange': [],
             'rowfill': [],
@@ -99,7 +103,8 @@ class Tetris {
      * @private
      * @param {Number} interval Speed of the game loop in milliseconds.
      */
-    setTimer(interval = 500) {
+    setTimer(interval) {
+        this.stop();
         this.timer = setInterval(this.movePiece.bind(this, 'down'), interval);
     }
 
@@ -179,6 +184,19 @@ class Tetris {
 
     // ---------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * @param {Boolean} dropping True to make the current piece drop.  False to stop dropping on the current piece.
+     */
+    setDropping(dropping) {
+        if (this.dropSpeed === 0) {
+            // Do instant drop.  Make own method to effeciently detect how the piece should be dropped
+            return;
+        }
+
+        this.isDropping = dropping;
+        this.setTimer(dropping ? this.dropSpeed : this.gameSpeed);
+    }
+
     /** 
      * Move the piece, then generate a new game board.
      * @param {"left"|"right"|"down"|"rotate-clockwise"|"rotate-counterclockwise"} [direction] How to move the piece
@@ -186,7 +204,13 @@ class Tetris {
      */
     movePiece(direction) {
 
+        // Return if the game is not running
         if (!this.timer) {
+            return;
+        }
+
+        // Don't do other movement while the piece is going down
+        if (this.isDropping && direction !== "down" && typeof direction !== 'undefined') {
             return;
         }
 
@@ -311,7 +335,7 @@ class Tetris {
      * If a collision occurs at the original piece position, end the game.
      * @private
      * @param {Tetris#piece} piece The current piece to be drawn on the board.
-     * @param {Tetris#board} board Current board containing oly places pieces.
+     * @param {Tetris#board} board Current board containing only placed pieces.
      * @return {Tetris#board|false} Returns the [board]{@link Tetris#board} with currentPiece drawn, or false if the new board would result in a collision.
      */
     getUpdatedBoard(piece, board) {

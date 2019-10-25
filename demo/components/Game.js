@@ -49,6 +49,7 @@ class Game extends Component {
         this.props.nextPiece(this.game.nextPiece.layouts[0]);
 
         this.onKeyDown = this.onKeyDown.bind(this);
+        this.onKeyUp   = this.onKeyUp.bind(this);
         this.restart   = this.restart.bind(this);
     }
     onImageLoaded() {
@@ -60,7 +61,14 @@ class Game extends Component {
 
         // Move the game piece
         const move = keybinds.move[e.key];
-        move && this.game.movePiece(move);
+        if (move === 'down') {
+            if (this.game.isDropping === false) {
+                this.game.setDropping(true);
+            }
+        }
+        else {
+            move && this.game.movePiece(move);
+        }
 
         // Pause the game
         if (keybinds[e.key] === 'pause') {
@@ -72,6 +80,12 @@ class Game extends Component {
                 this.game.stop();
                 this.props.gameStatusChange('paused');
             }
+        }
+    }
+    onKeyUp(e) {
+        const move = this.keybinds.move[e.key];
+        if (move === 'down') {
+            this.game.setDropping(false);
         }
     }
     start() {
@@ -92,7 +106,7 @@ class Game extends Component {
         }
 
         return (
-            <div tabIndex="0" onKeyDown={this.onKeyDown}>
+            <div tabIndex="0" onKeyDown={this.onKeyDown} onKeyUp={this.onKeyUp}>
                 { gameBoard }
                 { piecePreviewBoard }
                 <Results restart={this.restart} />
