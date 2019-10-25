@@ -3,7 +3,8 @@ function reducer(state, action) {
         case 'BOARD_CHANGE':
             return {
                 ...state,
-                board: action.payload
+                board: action.payload,
+                count: ++state.count
             }
         case 'GAME_STATUS_CHANGE':
             const newState = {

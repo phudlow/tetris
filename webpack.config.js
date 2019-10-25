@@ -6,6 +6,7 @@ const devMode = args.mode === 'development';
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const common = {
     entry: {
@@ -17,15 +18,14 @@ const common = {
     },
     module: {
         rules: [
-            { test: /\.(js|jsx)$/, use: 'babel-loader' }
+            { test: /\.js$/, use: 'babel-loader' },
+            { test: /.png$/, loader: 'file-loader', options: { outputPath: 'static', name: '[name].[ext]' } }
         ]
     },
     plugins: [
         new webpack.ProgressPlugin(),
         new CleanWebpackPlugin(),
-        new HTMLWebpackPlugin({
-            template: path.resolve(__dirname, 'demo/index.html')
-        })
+        new HTMLWebpackPlugin({ template: path.resolve(__dirname, 'demo/index.html') })
     ],
     watchOptions: {
         ignored: ['node_modules']
@@ -33,14 +33,31 @@ const common = {
 };
 
 const development = {
-    // devtool: 'inline-source-map', // replace with 'eval-source-map', if build times become too long
-    devtool: 'eval-source-map',
+    devtool: 'inline-source-map', // replace with 'eval-source-map', if build times become too long
     devServer: {
         contentBase: './dist'
     },
-    // plugins: [ new webpack.HotModuleReplacementPlugin() ]
+    module: {
+        rules: [
+            { test: /\.scss$/, use: [
+                MiniCssExtractPlugin.loader,
+                { loader: 'css-loader',  options: { sourceMap: true } },
+                { loader: 'sass-loader', options: { sourceMap: true } }
+            ]}
+        ]
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new MiniCssExtractPlugin({ filename: '[name].css' })
+    ]
 };
 
-const production = {};
+const production = {
+    module: {
+        rules: [
+            { test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] }
+        ]
+    }
+};
 
 module.exports = merge(common, devMode ? development : production);

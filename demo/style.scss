@@ -1,0 +1,14 @@
+body {
+    background-color: lightgrey;
+    margin: 30px;
+}
+
+canvas {
+    border-image-source: url('./static/background.png');
+    border-image-slice: 20;
+    border-image-width: 20px;
+    border-image-outset: 18px;
+    border-image-repeat: repeat;
+
+    border-style: inset;
+}

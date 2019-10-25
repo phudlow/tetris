@@ -14,7 +14,8 @@
         }
       ],
       "@babel/preset-react"
-    ]
+    ],
+    "plugins": ["@babel/plugin-proposal-object-rest-spread"]
   },
   "scripts": {
     "webpack:build": "webpack --mode=production",
@@ -36,13 +37,20 @@
   "homepage": "https://github.com/phudlow/tetris#readme",
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "file-loader": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
     "jsdoc": "^3.6.3",
+    "mini-css-extract-plugin": "^0.8.0",
     "minimist": "^1.2.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0",

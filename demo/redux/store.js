@@ -6,6 +6,7 @@ const initialStore = {
     score: 0,
     rows: 0,
     level: 1,
+    count: 0,
 
     // "running": game is running with interval timer
     // "paused": an active game's timer is inactive

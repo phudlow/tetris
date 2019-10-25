@@ -64,11 +64,11 @@ class Tetris {
     begin() {
         for (const event in this.subscribers) {
             if (!this.subscribers[event].length) {
-                console.warn(`No subscriber to event "${event}" found.  Call the .on("${event}", <handerFn>) method on the Tetrix instance to add a hander for this event.`)
+                console.warn(`No subscriber to event "${event}" found.  Call the .on("${event}", <handlerFn>) method on the Tetrix instance to add a hander for this event.`)
             }
         }
-        this.movePiece();
         this.setTimer(this.gameSpeed);
+        this.movePiece();
     }
 
     /** End the game.  Used to implement win / loss conditions. */
@@ -116,7 +116,7 @@ class Tetris {
      */
 
     /**
-     * Fires when any rows are filled, an array containing the indexes of the filled rows.
+     * Fires when any rows are filled, passing an array containing the indexes of the filled rows.
      * A subsequent [boardchange]{@link Tetris#boardchange} event is fired containing a [board]{@link Tetris#board} with the filled rows cleared.
      * @event Tetris#rowfill
      * @type {Number[]}
@@ -306,7 +306,7 @@ class Tetris {
     getUpdatedBoard(piece, board) {
         const { value, position, rotation } = piece;
         const [ row, col ] = position;
-        const pieceIdx = (piece.layouts.length + rotation % piece.layouts.length - 1) % piece.layouts.length;
+        const pieceIdx = (piece.layouts.length + rotation % piece.layouts.length) % piece.layouts.length;
         const layout = piece.layouts[pieceIdx];
         const originalPosition = row === 0 && col === 3;
         let gameLost = false;
