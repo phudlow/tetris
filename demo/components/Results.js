@@ -41,8 +41,8 @@ function Results(props) {
 
 const mapStateToProps = state => {
     return {
-        gameStatus: state.gameStatus,
-        score: state.score
+        gameStatus: state.game.gameStatus,
+        score: state.game.score
     };
 };
 

@@ -3,20 +3,29 @@ function reducer(state, action) {
         case 'BOARD_CHANGE':
             return {
                 ...state,
-                board: action.payload
+                game: {
+                    ...state.game,
+                    board: action.payload
+                }
             }
         case 'NEXT_PIECE':
             return {
                 ...state,
-                nextPiece: action.payload
+                game: {
+                    ...state.game,
+                    nextPiece: action.payload
+                }
             }
         case 'GAME_STATUS_CHANGE':
             const newState = {
                 ...state,
-                gameStatus: action.payload
+                game: {
+                    ...state.game,
+                    gameStatus: action.payload
+                }
             };
             if (action.payload === 'cleared') {
-                Object.assign(newState, {
+                Object.assign(newState.game, {
                     rows: 0,
                     score: 0,
                     level: 1,
@@ -26,7 +35,7 @@ function reducer(state, action) {
         case 'ROW_FILL':
             return {
                 ...state,
-                rows: state.score + action.payload
+                rows: state.rows + action.payload
             }
     }
     return state;

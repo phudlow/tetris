@@ -10,7 +10,7 @@ class PiecePreview extends Board {
 
 const mapStateToProps = state => {
     return {
-        board: state.nextPiece
+        board: state.game.nextPiece
     };
 }
 

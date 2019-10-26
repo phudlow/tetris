@@ -130,7 +130,7 @@ class Game extends Component {
 
 const mapStateToProps = state => {
     return {
-        gameStatus: state.gameStatus
+        gameStatus: state.game.gameStatus
     };
 }
 
