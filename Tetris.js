@@ -17,6 +17,14 @@ class Tetris {
      */
 
     /**
+     * Object containing the updated board and whether or not there was a collision.
+     * @private
+     * @typedef {Object} Tetris#updatedBoardResult
+     * @property {Tetris#board} board Returns the [board]{@link Tetris#board} with currentPiece drawn.
+     * @property {Boolean} hasCollision True if the updated board resulted in a collision.
+     */
+
+    /**
      * @param {Object} options
      * @param {Number} [options.height=18] The height of the game board.
      * @param {Number} [options.width=10] The width of the game board.
@@ -25,18 +33,21 @@ class Tetris {
      * @param {Number} [options.dropSpeed] How fast the game piece falls when a drop is initiated.  If 0 is passed, pieces will "hard drop", falling instantly.
      */
     constructor(options) {
+        options.gameSpeed = options.gameSpeed || 500;
+        options.dropSpeed = typeof options.dropSpeed === 'number' ? options.dropSpeed : this.options.gameSpeed / 10;
+
+        /** @member {Object} options Object containing options for the game.  See Constructor */
         this.options = options;
-
-        this.gameSpeed = options.gameSpeed || 500;
-        this.dropSpeed = typeof options.dropSpeed === 'number' ? options.dropSpeed : this.gameSpeed / 10;
+        /** @member {Boolean} isDropping Whether or not the piece is in a dropping state. */
         this.isDropping = false;
-
+        /** @member {Object} subscribers Object containgin current subscribers to events. */
         this.subscribers = {
             'boardchange': [],
             'rowfill': [],
             'end': [],
             'nextpiece': [],
         };
+
         this.eventTypes = Object.keys(this.subscribers);
 
         this.initialize();
@@ -72,7 +83,7 @@ class Tetris {
                 console.warn(`No subscriber to event "${event}" found.  Call the .on("${event}", <handlerFn>) method on the Tetrix instance to add a hander for this event.`)
             }
         }
-        this.setTimer(this.gameSpeed);
+        this.setTimer(this.options.gameSpeed);
         this.emit('nextpiece', this.nextPiece.layouts[0]);
         this.movePiece();
     }
@@ -95,7 +106,7 @@ class Tetris {
         if (this.timer) {
             console.warn('Tetris.start was called when the game timer is already running!');
         }
-        this.setTimer(this.gameSpeed);
+        this.setTimer(this.options.gameSpeed);
     }
 
     /**
@@ -192,7 +203,7 @@ class Tetris {
             return;
         }
         this.isDropping = dropping;
-        this.setTimer(dropping ? this.dropSpeed : this.gameSpeed);
+        this.setTimer(dropping ? this.options.dropSpeed : this.options.gameSpeed);
     }
 
     /** 
@@ -353,9 +364,7 @@ class Tetris {
      * @private
      * @param {Tetris#piece} piece The current piece to be drawn on the board.
      * @param {Tetris#board} board Current board containing only placed pieces.
-     * @return {Object} result
-     * @param {Tetris#board|false} result.board Returns the [board]{@link Tetris#board} with currentPiece drawn.
-     * @param {Boolean} result.hasCollision True if the updated board resulted in a collision.
+     * @return {Tetris#updatedBoardResult}
      */
     getUpdatedBoard(piece, board) {
         const { value, position, rotation } = piece;

@@ -1,8 +1,23 @@
-body {
-    margin: 30px;
+@font-face {
+    font-family: "Consequences";
+    src: url("./static/Consequences Shadow Italic.ttf");
+    src: url("./static/Consequences Shadow.ttf");
+    src: url("./static/Consequences Italic.ttf");
+    // src: url("./static/Consequences.ttf");
 }
 
-canvas, .piece-preview {
+body {
+    font-family: Consequences;
+    margin: 30px;
+    color: navy;
+    // background-color: pink
+}
+
+canvas {
+    background-color: navy;
+}
+
+.bordered, canvas {
     border-image-source: url('./static/background.png');
     border-image-slice: 20;
     border-image-width: 20px;
@@ -10,6 +25,30 @@ canvas, .piece-preview {
     border-image-repeat: repeat;
 
     border-style: inset;
+}
 
-    background-color: lightgrey;
+header {
+    font-size: 6em;
+    margin: 0 0 50px 0;
+
+    // Some rules of these title elements are animated to a new style with gsap on load
+    #tetris-title, #sirtet-title > span, #title-colon {
+        position: relative;
+    }
+    #title-colon {
+        left: 100vw;
+    }
+    #tetris-title, #sirtet-title > span {
+        opacity: 0;
+    }
+    #sirtet-title {
+        color: orange
+    }
+    border-bottom: 1px solid grey;
+}
+
+#game {
+    & > * {
+        margin-right: 40px;
+    }
 }

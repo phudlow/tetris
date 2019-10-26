@@ -3,8 +3,7 @@ function reducer(state, action) {
         case 'BOARD_CHANGE':
             return {
                 ...state,
-                board: action.payload,
-                count: ++state.count
+                board: action.payload
             }
         case 'NEXT_PIECE':
             return {

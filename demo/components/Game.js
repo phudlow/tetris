@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { boardChange, gameStatusChange, rowFill, nextPiece } from '../redux/actions';
 
+import Header from './Header';
 import GameBoard from './GameBoard';
 import PiecePreviewBoard from './PiecePreviewBoard';
 import Results from './Results';
@@ -49,8 +50,10 @@ class Game extends Component {
         this.props.boardChange(this.game.currentBoard);
         this.props.nextPiece(this.game.nextPiece.layouts[0]);
 
-        this.onKeyDown = this.onKeyDown.bind(this);
-        this.onKeyUp   = this.onKeyUp.bind(this);
+        // Assign keybindings to body
+        document.body.onkeydown = this.onKeyDown.bind(this);
+        document.body.onkeyup   = this.onKeyUp.bind(this);
+
         this.restart   = this.restart.bind(this);
     }
     onImageLoaded() {
@@ -107,9 +110,14 @@ class Game extends Component {
         }
 
         return (
-            <div tabIndex="0" onKeyDown={this.onKeyDown} onKeyUp={this.onKeyUp}>
+            <div id="game" >
+                <Header />
                 { gameBoard }
-                { piecePreviewBoard }
+                <span>
+                    Next piece:
+                    <br/>
+                    { piecePreviewBoard }
+                </span>
                 <Results restart={this.restart} />
                 {/* <PiecePreview piece={this.} /> */}
                 {/* highscores : save to local storage */}

@@ -13,8 +13,7 @@ class GameBoard extends Board {
 
 const mapStateToProps = state => {
     return {
-        board: state.board,
-        count: state.count
+        board: state.board
     };
 }
 

@@ -6,6 +6,7 @@ import store from './redux/store';
 import './style.scss';
 
 import Game from './components/Game';
+import Header from './components/Header';
 
 ReactDOM.render((
     <Provider store={store}>

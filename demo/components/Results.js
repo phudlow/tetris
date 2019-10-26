@@ -26,7 +26,7 @@ const Modal = styled.div`
 function Results(props) {
     return (
         <ModalContainer gameEnded={props.gameStatus === 'ended'}>
-            <Modal>
+            <Modal className="bordered">
                 <h1>Game Over</h1>
                 <br/>
                 <strong>Score:</strong> {props.score}
