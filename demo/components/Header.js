@@ -19,6 +19,7 @@ class Header extends Component {
         const letterOffset = "100px";
 
         const introAnimation = () => {
+            const tl = new TimelineLite();
 
             // Animate TETRIS title: show => move right => flash color
             tl.to(tetrisTitle, 0.3, { opacity: 1 }); // 0.3
