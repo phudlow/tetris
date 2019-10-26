@@ -27,7 +27,7 @@ class Board extends Component {
     updateBoard(currBoard, nextBoard) {
         const ctx = this.canvas.current.getContext('2d');
         const blockSize = this.blockSize;
-        const blocks    = this.props.blocksImg;
+        const blocks    = window.blocksImg;
         let currValue, nextValue;
 
         for (let i = 0, numRows = nextBoard.length; i < numRows; i++) {

@@ -25,3 +25,15 @@ export const rowFill = rows => {
         payload: rows
     };
 }
+
+export const showMainMenu = () => {
+    return {
+        type: 'SHOW_MAIN_MENU'
+    };
+}
+
+export const newGame = () => {
+    return {
+        type: 'NEW_GAME'
+    };
+}

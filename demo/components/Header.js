@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import { TimelineLite } from 'gsap';
+
+import { showMainMenu } from '../redux/actions';
 
 class Header extends Component {
     constructor(props) {
@@ -12,17 +14,22 @@ class Header extends Component {
         const tetrisTitle = document.getElementById('tetris-title');
         const titleColon = document.getElementById('title-colon');
         const sirtetLetters = document.getElementById('sirtet-title').querySelectorAll('span');
+
         const letterAnimationTime = 0.05;
         const letterOffset = "100px";
-        const tl = new TimelineLite();
 
-        const anim = () => {
+        const introAnimation = () => {
+
+            // Animate TETRIS title: show => move right => flash color
             tl.to(tetrisTitle, 0.3, { opacity: 1 }); // 0.3
             tl.from(tetrisTitle, 0.3, { left: "-200px" }, "-=0.3"); // 0.3
             tl.to(tetrisTitle, 0.05, { color: "orange" }, "-=0.06"); // 0.29
             tl.to(tetrisTitle, 1.5, { color: "navy" }); // 1.79
+
+            // Animate TETRIS title colon: Move colon from off-screen right into place
             tl.to(titleColon, 0.8, { left: 0, ease: 'linear' }, "-=1.8"); // 0.79
 
+            // Animate SIRTET: Show and move letters sequentially into place from rotatinge 4 cardinal directions
             sirtetLetters.forEach((letter, idx) => {
                 const timeOffset = 1.1 + idx * 0.1;
                 tl.to(letter, letterAnimationTime, { opacity: 1 }, timeOffset);
@@ -41,10 +48,13 @@ class Header extends Component {
                         break;
                 }
             });
+
+            // Add one more arbitrary frame at the end, so we show the main menu after all the animations have completed
+            tl.set(tetrisTitle, { opacity: 1, onComplete: this.props.showMainMenu });
         };
 
         // Small delay before animation begins
-        setTimeout(anim, 500);
+        setTimeout(introAnimation, 500);
     }
     render() {
         return (
@@ -65,4 +75,10 @@ class Header extends Component {
     }
 }
 
-export default Header;
+const mapDispatchToProps = dispatch => {
+    return {
+        showMainMenu: board => dispatch(showMainMenu()),
+    };
+}
+
+export default connect(null, mapDispatchToProps)(Header);

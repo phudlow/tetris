@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import { gameStatusChange } from '../redux/actions';
+import { gameStatusChange, showMainMenu } from '../redux/actions';
 
 const ModalContainer = styled.div`
     display: ${props => props.gameEnded ? 'flex' : 'none'};
@@ -31,7 +31,7 @@ function Results(props) {
                 <br/>
                 <strong>Score:</strong> {props.score}
                 <br/><br/>
-                <button onClick={props.gameStatusChange.bind(null, null)}>OK</button>
+                <button onClick={props.showMainMenu}>Main Menu</button>
                 <br/><br/>
                 <button onClick={props.restart}>Restart</button>
             </Modal>
@@ -48,7 +48,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        gameStatusChange: status => dispatch(gameStatusChange(status))
+        gameStatusChange: status => dispatch(gameStatusChange(status)),
+        showMainMenu: () => dispatch(showMainMenu())
     };
 };
 

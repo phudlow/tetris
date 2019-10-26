@@ -37,6 +37,24 @@ function reducer(state, action) {
                 ...state,
                 rows: state.rows + action.payload
             }
+        case 'SHOW_MAIN_MENU':
+            return {
+                ...state,
+                ui: 'main menu'
+            }
+        case 'NEW_GAME':
+            return {
+                ...state,
+                ui: 'game',
+                game: {
+                    board: null,
+                    nextPiece: null,
+                    score: 0,
+                    rows: 0,
+                    level: 1,
+                    gameStatus: null
+                }
+            }
     }
     return state;
 }

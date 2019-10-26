@@ -10,7 +10,7 @@ body {
     font-family: Consequences;
     margin: 30px;
     color: navy;
-    // background-color: pink
+    overflow-x: hidden;
 }
 
 canvas {
@@ -30,8 +30,13 @@ canvas {
 header {
     font-size: 6em;
     margin: 0 0 50px 0;
+    border-bottom: 1px solid grey;
 
-    // Some rules of these title elements are animated to a new style with gsap on load
+    #sirtet-title {
+        color: orange
+    }
+
+    // Animated elements:
     #tetris-title, #sirtet-title > span, #title-colon {
         position: relative;
     }
@@ -41,10 +46,11 @@ header {
     #tetris-title, #sirtet-title > span {
         opacity: 0;
     }
-    #sirtet-title {
-        color: orange
-    }
-    border-bottom: 1px solid grey;
+}
+
+#main-menu {
+    position: relative;
+    opacity: 0;
 }
 
 #game {

@@ -5,11 +5,10 @@ import store from './redux/store';
 
 import './style.scss';
 
-import Game from './components/Game';
-import Header from './components/Header';
+import App from './components/App';
 
 ReactDOM.render((
     <Provider store={store}>
-        <Game />
+        <App />
     </Provider>
 ), document.getElementById('app'));

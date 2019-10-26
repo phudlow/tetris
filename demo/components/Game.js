@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { boardChange, gameStatusChange, rowFill, nextPiece } from '../redux/actions';
 
-import Header from './Header';
 import GameBoard from './GameBoard';
+import CountDown from './CountDown';
 import PiecePreviewBoard from './PiecePreviewBoard';
 import Results from './Results';
 
@@ -23,12 +23,8 @@ class Game extends Component {
 
         // Start the game once the images have been loaded and canvas mounted
         this.state = {
-            blocksLoaded: false
+            countDown: null
         };
-
-        this.blocksImg = document.createElement('img');
-        this.blocksImg.setAttribute('src', './static/block.png');
-        this.blocksImg.onload = this.onImageLoaded.bind(this);
 
         this.keybinds = {
             move: {
@@ -56,8 +52,7 @@ class Game extends Component {
 
         this.restart   = this.restart.bind(this);
     }
-    onImageLoaded() {
-        this.setState({ blocksLoaded: true });
+    componentDidMount() {
         this.start();
     }
     onKeyDown(e) {
@@ -92,9 +87,23 @@ class Game extends Component {
             this.game.setDropping(false);
         }
     }
+
+    // Start countdown, tracked in state.  When complete, begin game.
     start() {
-        this.game.begin();
-        this.props.gameStatusChange("running");
+        let countDown = 3;
+        this.setState({ countDown });
+
+        this.countDownTimer = setInterval(() => {
+            countDown--;
+            if (countDown < 0) {
+                this.game.begin();
+                this.props.gameStatusChange("running");
+                countDown = null;
+                clearInterval(this.countDownTimer);
+                this.countDownTimer = null;
+            }
+            this.setState({ countDown });
+        }, 1000);
     }
     restart() {
         this.game.clear();
@@ -102,22 +111,15 @@ class Game extends Component {
         this.start();
     }
     render() {
-        let gameBoard, piecePreviewBoard;
-
-        if (this.state.blocksLoaded) {
-            gameBoard = <GameBoard blocksImg={this.blocksImg} />;
-            piecePreviewBoard = <PiecePreviewBoard blocksImg={this.blocksImg} />;
-        }
-
         return (
             <div id="game" >
-                <Header />
-                { gameBoard }
+                <PiecePreviewBoard />
                 <span>
                     Next piece:
                     <br/>
-                    { piecePreviewBoard }
+                    <GameBoard countDown={this.state.countDown} />
                 </span>
+                <CountDown countDown={this.state.countDown} />
                 <Results restart={this.restart} />
                 {/* <PiecePreview piece={this.} /> */}
                 {/* highscores : save to local storage */}
@@ -130,7 +132,8 @@ class Game extends Component {
 
 const mapStateToProps = state => {
     return {
-        gameStatus: state.game.gameStatus
+        gameStatus: state.game.gameStatus,
+        ui: state.ui
     };
 }
 
