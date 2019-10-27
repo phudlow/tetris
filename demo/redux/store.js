@@ -16,7 +16,16 @@ const initialStore = {
         gameStatus: null,
     },
     ui: null,
-    options: {},
+    options: {
+        keybinds: {
+            "left": 37,
+            "drop": 40,
+            "right": 39,
+            "rotate-counterclockwise": 69,
+            "rotate-clockwise": 82,
+            "pause": 32
+        }
+    },
     highScores: []
 }
 const store = createStore(reducer, initialStore, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());

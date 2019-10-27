@@ -38,6 +38,13 @@ export const showOptions = () => {
     };
 }
 
+export const newOptions = options => {
+    return {
+        type: 'NEW_OPTIONS',
+        payload: options
+    };
+}
+
 export const newGame = () => {
     console.log('action newgame');
     return {

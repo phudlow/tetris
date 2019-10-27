@@ -26,16 +26,7 @@ class Game extends Component {
             countDown: null
         };
 
-        this.keybinds = {
-            move: {
-                'k': 'left',
-                ';': 'right',
-                'l': 'down',
-                'r': 'rotate-clockwise',
-                'e': 'rotate-counterclockwise'
-            },
-            'p': 'pause'
-        };
+        this.keybinds = props.keybinds;
 
         this.game = new Tetris(gameOptions);
 
@@ -56,21 +47,21 @@ class Game extends Component {
         this.start();
     }
     onKeyDown(e) {
-        const keybinds = this.keybinds;
+        const action = this.keybinds[e.keyCode];
 
-        // Move the game piece
-        const move = keybinds.move[e.key];
-        if (move === 'down') {
+        if (action) {
+            e.preventDefault();
+        }
+
+        // Drop the game piece
+        if (action === 'drop') {
             if (this.game.isDropping === false) {
                 this.game.setDropping(true);
             }
         }
-        else {
-            move && this.game.movePiece(move);
-        }
 
         // Pause the game
-        if (keybinds[e.key] === 'pause') {
+        else if (action === 'pause') {
             if (this.props.gameStatus === 'paused') {
                 this.game.start();
                 this.props.gameStatusChange('running');
@@ -80,10 +71,18 @@ class Game extends Component {
                 this.props.gameStatusChange('paused');
             }
         }
+
+        // Move the game piece
+        else {
+            action && this.game.movePiece(action);
+        }
     }
+
     onKeyUp(e) {
-        const move = this.keybinds.move[e.key];
-        if (move === 'down') {
+        const action = this.keybinds[e.keyCode];
+
+        // Stop the dropping of the piece, if it isn't hard dropping
+        if (action === 'drop' && this.game.options.dropSpeed !== 0) {
             this.game.setDropping(false);
         }
     }
@@ -131,7 +130,12 @@ class Game extends Component {
 }
 
 const mapStateToProps = state => {
+    const mapKeyCodesToActions = {};
+    for (const action in state.options.keybinds) {
+        mapKeyCodesToActions[state.options.keybinds[action]] = action;
+    }
     return {
+        keybinds: mapKeyCodesToActions,
         gameStatus: state.game.gameStatus,
         ui: state.ui
     };

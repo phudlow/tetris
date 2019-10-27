@@ -16,25 +16,35 @@
     src: url("./static/captcanaveral.ttf");
 }
 
-///////////////
-// Top-Level //
-///////////////
-#app {
-    display: inline-block;
-}
+//////////////////////////
+// Top-Level / Defaults //
+//////////////////////////
 body {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
     font-family: "Captain-Canaveral";
     color: navy;
     margin: 30px;
     overflow-x: hidden; // Some animations start elements off screen causing unnecessary scrollbar.
-
+}
+#app {
+    display: inline-block;
+}
+#render-controller {
+    font-size: 2.5em;
 }
 
 /////////
 // App //
 /////////
 header {
-    font-family: Consequences Italic;
+    position: sticky;
+    background-color: white;
+    top: 0px;
+    z-index: 1;
+    font-family: 'Consequences Italic';
     display: inline-block;
     font-size: 6em;
     margin: 0 0 50px 0;
@@ -71,6 +81,30 @@ header {
 
     border-style: inset;
 }
+#options {
+    label {
+        display: block;
+        height: 1em;
+        position: relative;
+        cursor: pointer;
+        > * {
+            vertical-align: top;
+        }
+    }
+    span {
+        position: absolute;
+        left: 0;
+    }
+    input[type=text] {
+        position: absolute;
+        right: 0;
+        font-size: 1em;
+        width: 9em;
+        font-family: 'Courier New', Courier, monospace;
+        border: none;
+        outline: none;
+    }
+}
 #game {
     & > * {
         margin-right: 40px;
@@ -86,11 +120,18 @@ canvas {
 ///////////////////////
 // Button Glow Pulse //
 ///////////////////////
-.btn-hover {
+@mixin pulse-text {
     animation-duration: 0.6s;
     animation-name: glow-pulse;
-    animation-iteration-count: infinite;
     animation-direction: alternate;
+}
+.pulse-text-twice {
+    @include pulse-text;
+    animation-iteration-count: 2;
+}
+.pulse-text {
+    @include pulse-text;
+    animation-iteration-count: infinite;
 }
 @keyframes glow-pulse {
     from {

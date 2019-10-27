@@ -30,7 +30,7 @@ class RenderController extends Component {
         }
 
         return (
-            <div>
+            <div id="render-controller">
                 { activeComponent }
             </div>
         );

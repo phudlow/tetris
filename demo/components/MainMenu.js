@@ -22,9 +22,9 @@ class MainMenu extends Component {
         return (
             <div id="main-menu">
                 <Button onClick={this.props.newGame}>New Game</Button>
-                <br/><br/>
+                <br/>
                 <Button onClick={this.props.showOptions}>Options</Button>
-                <br/><br/>
+                <br/>
                 <Button onClick={this.props.newGame}>High Scores</Button>
             </div>
         )

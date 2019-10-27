@@ -11,7 +11,7 @@ const ButtonBackground = styled.div`
     width: 300%;
     left: -300%;
     z-index: -1;
-    background: linear-gradient(135deg, #eee, #eee 60%, yellow 60%, yellow 77%, white 77%, white);
+    background: linear-gradient(90deg, #eee, #eee 60%, yellow 60%, yellow 77%, white 77%, white);
 `;
 
 const ButtonStyled = styled.div`
@@ -20,7 +20,6 @@ const ButtonStyled = styled.div`
     cursor: pointer;
     font-family: Captain-Canaveral;
     padding: 10px;
-    font-size: 2.5em;
     overflow: hidden;
 `;
 
@@ -41,7 +40,7 @@ class Button extends Component {
             left: "0",
             ease: "linear",
             onComplete: () => {
-                btn.classList.add('btn-hover');
+                btn.classList.add('pulse-text');
             }
         });
     }
@@ -52,7 +51,7 @@ class Button extends Component {
         const tl = new TimelineLite();
 
         tl.set(background, { left: "-300%" });
-        btn.classList.remove('btn-hover');
+        btn.classList.remove('pulse-text');
     }
     render() {
         return (

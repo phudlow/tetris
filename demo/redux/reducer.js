@@ -47,6 +47,18 @@ function reducer(state, action) {
                 ...state,
                 ui: 'options'
             }
+        case 'NEW_OPTIONS':
+            return {
+                ...state,
+                options: {
+                    ...state.options,
+                    ...action.payload,
+                    keybinds: {
+                        ...state.options.keybinds,
+                        ...action.payload.keybinds
+                    }
+                }
+            }
         case 'NEW_GAME':
             return {
                 ...state,

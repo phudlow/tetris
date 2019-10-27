@@ -137,7 +137,7 @@ class Tetris {
 
     /**
      * Fires when the game ends.
-     * @event Tetris#end 
+     * @event Tetris#end
      */
 
     /**
@@ -206,7 +206,7 @@ class Tetris {
         this.setTimer(dropping ? this.options.dropSpeed : this.options.gameSpeed);
     }
 
-    /** 
+    /**
      * Move the piece, then generate a new game board.
      * @param {"left"|"right"|"down"|"rotate-clockwise"|"rotate-counterclockwise"} [direction] How to move the piece
      * @fires Tetris#boardchange
@@ -298,7 +298,7 @@ class Tetris {
      * Handle possible full rows on the board by clearing them and firing appropriate events.
      * @private
      * @fires Tetris#rowfill
-     * @fires Tetris#boardchange 
+     * @fires Tetris#boardchange
      */
     handleFullRows() {
         const fullRows = this.getFullRows(this.currentBoard);
@@ -407,7 +407,7 @@ class Tetris {
      * Generate a blank [board]{@link Tetris#board}.
      * @private
      * @param {Number} height
-     * @param {Number} width 
+     * @param {Number} width
      */
     generateNewBoard(height, width) {
         return (new Array(height)).fill((new Array(width)).fill(0));
