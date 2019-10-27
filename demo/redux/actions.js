@@ -32,6 +32,12 @@ export const showMainMenu = () => {
     };
 }
 
+export const showOptions = () => {
+    return {
+        type: 'SHOW_OPTIONS'
+    };
+}
+
 export const newGame = () => {
     console.log('action newgame');
     return {

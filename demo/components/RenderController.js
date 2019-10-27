@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import MainMenu from './MainMenu';
 import Game from './Game';
-// import Options from './Options';
+import Options from './Options';
 // import HihgScores from './HighScores';
 
 class RenderController extends Component {
@@ -22,7 +22,7 @@ class RenderController extends Component {
                 activeComponent = <Game />
                 break;
             case "options":
-                // activeComponent = <Options />
+                activeComponent = <Options />
                 break;
             case "high scores":
                 // activeComponent = <HighScores />

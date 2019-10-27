@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { newGame } from '../redux/actions';
+import { newGame, showOptions } from '../redux/actions';
 import { TimelineLite } from 'gsap';
 
 import Button from './Button';
@@ -23,7 +23,7 @@ class MainMenu extends Component {
             <div id="main-menu">
                 <Button onClick={this.props.newGame}>New Game</Button>
                 <br/><br/>
-                <Button onClick={this.props.newGame}>Options</Button>
+                <Button onClick={this.props.showOptions}>Options</Button>
                 <br/><br/>
                 <Button onClick={this.props.newGame}>High Scores</Button>
             </div>
@@ -39,7 +39,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        newGame: () => dispatch(newGame())
+        newGame: () => dispatch(newGame()),
+        showOptions: () => dispatch(showOptions())
     };
 }
 

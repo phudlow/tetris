@@ -42,6 +42,11 @@ function reducer(state, action) {
                 ...state,
                 ui: 'main menu'
             }
+        case 'SHOW_OPTIONS':
+            return {
+                ...state,
+                ui: 'options'
+            }
         case 'NEW_GAME':
             return {
                 ...state,
