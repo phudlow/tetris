@@ -21,7 +21,7 @@ class CountDown extends Component {
         tl.to(countdown, 0.2, { "font-size": "5em" });
     }
     render() {
-        const number = this.props.countDown === 0 ? 'GO!' : this.props.countDown;
+        const number = this.props.countDown === 0 ? 'START!' : this.props.countDown;
         return (
             <Number id="countdown" hidden={this.props.countDown === null}>{number}</Number>
         );

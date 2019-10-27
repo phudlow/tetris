@@ -1,33 +1,41 @@
+///////////
+// Fonts //
+///////////
+@font-face {
+    font-family: "Consequences Italic";
+    src: url("./static/Consequences Italic.ttf");
+}
+
 @font-face {
     font-family: "Consequences";
-    src: url("./static/Consequences Shadow Italic.ttf");
-    src: url("./static/Consequences Shadow.ttf");
-    src: url("./static/Consequences Italic.ttf");
-    // src: url("./static/Consequences.ttf");
+    src: url("./static/Consequences.ttf");
 }
 
+@font-face {
+    font-family: "Captain-Canaveral";
+    src: url("./static/captcanaveral.ttf");
+}
+
+///////////////
+// Top-Level //
+///////////////
+#app {
+    display: inline-block;
+}
 body {
-    font-family: Consequences;
-    margin: 30px;
+    font-family: "Captain-Canaveral";
     color: navy;
-    overflow-x: hidden;
+    margin: 30px;
+    overflow-x: hidden; // Some animations start elements off screen causing unnecessary scrollbar.
+
 }
 
-canvas {
-    background-color: navy;
-}
-
-.bordered, canvas {
-    border-image-source: url('./static/background.png');
-    border-image-slice: 20;
-    border-image-width: 20px;
-    border-image-outset: 18px;
-    border-image-repeat: repeat;
-
-    border-style: inset;
-}
-
+/////////
+// App //
+/////////
 header {
+    font-family: Consequences Italic;
+    display: inline-block;
     font-size: 6em;
     margin: 0 0 50px 0;
     border-bottom: 1px solid grey;
@@ -47,14 +55,46 @@ header {
         opacity: 0;
     }
 }
-
 #main-menu {
-    position: relative;
-    opacity: 0;
+    text-align: center;
+    & > div {
+        position: relative;
+        opacity: 0;
+    }
 }
+.bordered, canvas {
+    border-image-source: url('./static/background.png');
+    border-image-slice: 20;
+    border-image-width: 20px;
+    border-image-outset: 18px;
+    border-image-repeat: repeat;
 
+    border-style: inset;
+}
 #game {
     & > * {
         margin-right: 40px;
+    }
+}
+canvas {
+    background-color: navy;
+}
+
+///////////////////////
+// Button Glow Pulse //
+///////////////////////
+.btn-hover {
+    animation-duration: 0.6s;
+    animation-name: glow-pulse;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+@keyframes glow-pulse {
+    from {
+        color: navy;
+    }
+
+    to {
+        color: orange;
     }
 }

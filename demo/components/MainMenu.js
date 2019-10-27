@@ -3,21 +3,29 @@ import { connect } from 'react-redux';
 import { newGame } from '../redux/actions';
 import { TimelineLite } from 'gsap';
 
-import Button from '@material-ui/core/Button';
+import Button from './Button';
 
 class MainMenu extends Component {
     constructor(props) {
         super(props);
     }
+    // Animate each button into view
     componentDidMount() {
-        const mainMenu = document.getElementById('main-menu');
+        const buttons = document.getElementById('main-menu').querySelectorAll('div');
         const tl = new TimelineLite();
-        tl.fromTo(mainMenu, 0.5, { top: "10px" }, { opacity: 1, top: "0px" });
+
+        buttons.forEach((button, idx) => {
+            tl.fromTo(button, 0.2, { top: "10px" }, { opacity: 1, top: "0" }, 0.05 + idx * 0.05);
+        });
     }
     render() {
         return (
             <div id="main-menu">
-                <Button variant="contained" color="primary" onClick={this.props.newGame}>New Game</Button>
+                <Button onClick={this.props.newGame}>New Game</Button>
+                <br/><br/>
+                <Button onClick={this.props.newGame}>Options</Button>
+                <br/><br/>
+                <Button onClick={this.props.newGame}>High Scores</Button>
             </div>
         )
     }
@@ -31,7 +39,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        newGame: board => dispatch(newGame())
+        newGame: () => dispatch(newGame())
     };
 }
 

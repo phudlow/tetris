@@ -33,6 +33,7 @@ export const showMainMenu = () => {
 }
 
 export const newGame = () => {
+    console.log('action newgame');
     return {
         type: 'NEW_GAME'
     };
