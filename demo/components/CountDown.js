@@ -17,11 +17,11 @@ class CountDown extends Component {
         const countdown = document.getElementById('countdown');
         const tl = new TimelineLite();
 
-        tl.to(countdown, 0.2, { "font-size": "6em" });
-        tl.to(countdown, 0.2, { "font-size": "5em" });
+        tl.to(countdown, 0.2, { "font-size": "3.5em" });
+        tl.to(countdown, 0.2, { "font-size": "2.5em" });
     }
     render() {
-        const number = this.props.countDown === 0 ? 'START!' : this.props.countDown;
+        const number = this.props.countDown === 0 ? 'GO!' : this.props.countDown;
         return (
             <Number id="countdown" hidden={this.props.countDown === null}>{number}</Number>
         );

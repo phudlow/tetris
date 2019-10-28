@@ -11,7 +11,7 @@ class MainMenu extends Component {
     }
     // Animate each button into view
     componentDidMount() {
-        const buttons = document.getElementById('main-menu').querySelectorAll('div');
+        const buttons = document.getElementById('main-menu').querySelectorAll('#main-menu > div');
         const tl = new TimelineLite();
 
         buttons.forEach((button, idx) => {

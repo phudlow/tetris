@@ -82,6 +82,7 @@ header {
     border-style: inset;
 }
 #options {
+    padding: 0 80px;
     label {
         display: block;
         height: 1em;
@@ -97,24 +98,36 @@ header {
     }
     input[type=text] {
         position: absolute;
+        cursor: pointer;
         right: 0;
         font-size: 1em;
-        width: 9em;
+        width: 7.8em;
         font-family: 'Courier New', Courier, monospace;
         border: none;
         outline: none;
     }
 }
 #game {
-    & > * {
-        margin-right: 40px;
+    & > div:nth-child(1), & > div:nth-child(2) {
+        margin-right: 60px;
+        display: inline-block;
+        position: relative;
+    }
+    #countdown {
+        font-family: Consequences;
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -55%);
+    }
+    #piece-preview-board-label{
+        position: relative;
+        top: 50px;
+        left: -20px;
     }
 }
 canvas {
     background-color: navy;
-}
-#countdown {
-    font-family: Consequences Italic;
 }
 
 ///////////////////////
@@ -125,7 +138,7 @@ canvas {
     animation-name: glow-pulse;
     animation-direction: alternate;
 }
-.pulse-text-twice {
+.pulse-text-once {
     @include pulse-text;
     animation-iteration-count: 2;
 }
@@ -137,7 +150,6 @@ canvas {
     from {
         color: navy;
     }
-
     to {
         color: orange;
     }

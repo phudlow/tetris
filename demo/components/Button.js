@@ -10,7 +10,6 @@ const ButtonBackground = styled.div`
     height: 100%;
     width: 300%;
     left: -300%;
-    z-index: -1;
     background: linear-gradient(90deg, #eee, #eee 60%, yellow 60%, yellow 77%, white 77%, white);
 `;
 
@@ -27,13 +26,13 @@ class Button extends Component {
     constructor(props) {
         super(props);
 
-        this.onMouseOver = this.onMouseOver.bind(this);
+        this.onMouseEnter = this.onMouseEnter.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
     }
     // Slide background behind button and add pulsing button glow
-    onMouseOver(e) {
-        const btn = e.target;
-        const background = btn.querySelector('div');
+    onMouseEnter(e) {
+        const btn = e.currentTarget;
+        const background = btn.querySelector('div:first-child');
         const tl = new TimelineLite();
 
         tl.to(background, 0.2, {
@@ -46,8 +45,8 @@ class Button extends Component {
     }
     // Set button to default state
     onMouseLeave(e) {
-        const btn = e.target;
-        const background = btn.querySelector('div');
+        const btn = e.currentTarget;
+        const background = btn.querySelector('div:first-child');
         const tl = new TimelineLite();
 
         tl.set(background, { left: "-300%" });
@@ -56,12 +55,18 @@ class Button extends Component {
     render() {
         return (
             <ButtonStyled
-                onMouseOver={this.onMouseOver}
+                onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
                 onClick={this.props.onClick}
             >
+                {/* Animated button background */}
                 <ButtonBackground />
-                {this.props.children}
+
+                {/* Also absolute position, to appear above the absolute positioned ButtonBackground */}
+                <div style={{position: "absolute"}}>{this.props.children}</div>
+
+                {/* Invisible, to take up space for proper dimensions */}
+                <div style={{color: 'transparent'}}>{this.props.children}</div>
             </ButtonStyled>
         );
     }

@@ -62,8 +62,8 @@ class Options extends Component {
     handleKeyAlreadyTaken(keyCode) {
         const takenByAction       = this.getActionOfKeyCode(keyCode);
         const spanOfTakenByAction = document.querySelector(`#options span[action=${takenByAction}]`);
-        spanOfTakenByAction.classList.remove('pulse-text-twice');
-        spanOfTakenByAction.classList.add('pulse-text-twice');
+        spanOfTakenByAction.classList.remove('pulse-text-once');
+        spanOfTakenByAction.classList.add('pulse-text-once');
 
         // If that span was already animated, it's necessary to clone and replace node to see animation again
         var newSpan = spanOfTakenByAction.cloneNode(true);

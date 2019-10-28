@@ -5,7 +5,7 @@ import { boardChange, gameStatusChange, rowFill, nextPiece } from '../redux/acti
 import GameBoard from './GameBoard';
 import CountDown from './CountDown';
 import PiecePreviewBoard from './PiecePreviewBoard';
-import Results from './Results';
+import ResultsModal from './ResultsModal';
 
 import pieces from '../../standardPieces';
 import Tetris from '../../Tetris';
@@ -112,18 +112,21 @@ class Game extends Component {
     render() {
         return (
             <div id="game" >
-                <PiecePreviewBoard />
-                <span>
-                    Next piece:
-                    <br/>
+                <div>
                     <GameBoard countDown={this.state.countDown} />
-                </span>
-                <CountDown countDown={this.state.countDown} />
-                <Results restart={this.restart} />
-                {/* <PiecePreview piece={this.} /> */}
+                    <CountDown countDown={this.state.countDown} />
+                </div>
+                <div>
+                    <div id="piece-preview-board-label">
+                        Next piece:
+                    </div>
+                    <br/><br />
+                    <PiecePreviewBoard />
+                </div>
+
+                <ResultsModal restart={this.restart} />
                 {/* highscores : save to local storage */}
                 {/* score: score for current game, show this or highscores */}
-                {/* logo */}
             </div>
         );
     }
