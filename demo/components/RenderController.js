@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import MainMenu from './MainMenu';
 import Game from './Game';
 import Options from './Options';
-// import HihgScores from './HighScores';
+// import HighScores from './HighScores';
 
 class RenderController extends Component {
     constructor(props) {

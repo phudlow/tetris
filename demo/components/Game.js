@@ -6,6 +6,7 @@ import GameBoard from './GameBoard';
 import CountDown from './CountDown';
 import PiecePreviewBoard from './PiecePreviewBoard';
 import ResultsModal from './ResultsModal';
+import PausedModal from './PausedModal';
 
 import pieces from '../../standardPieces';
 import Tetris from '../../Tetris';
@@ -41,7 +42,8 @@ class Game extends Component {
         document.body.onkeydown = this.onKeyDown.bind(this);
         document.body.onkeyup   = this.onKeyUp.bind(this);
 
-        this.restart   = this.restart.bind(this);
+        this.restart = this.restart.bind(this);
+        this.resume  = this.resume.bind(this);
     }
     componentDidMount() {
         this.start();
@@ -62,13 +64,14 @@ class Game extends Component {
 
         // Pause the game
         else if (action === 'pause') {
-            if (this.props.gameStatus === 'paused') {
-                this.game.start();
-                this.props.gameStatusChange('running');
+            if (!this.props.gameStatus) {
+                return;
+            }
+            else if (this.props.gameStatus === 'paused') {
+                this.resume();
             }
             else {
-                this.game.stop();
-                this.props.gameStatusChange('paused');
+                this.pause();
             }
         }
 
@@ -76,6 +79,16 @@ class Game extends Component {
         else {
             action && this.game.movePiece(action);
         }
+    }
+
+    pause() {
+        this.game.stop();
+        this.props.gameStatusChange('paused');
+    }
+
+    resume() {
+        this.game.start();
+        this.props.gameStatusChange('running');
     }
 
     onKeyUp(e) {
@@ -120,11 +133,12 @@ class Game extends Component {
                     <div id="piece-preview-board-label">
                         Next piece:
                     </div>
-                    <br/><br />
+                    <br/><br/>
                     <PiecePreviewBoard />
                 </div>
 
                 <ResultsModal restart={this.restart} />
+                <PausedModal resume={this.resume} />
                 {/* highscores : save to local storage */}
                 {/* score: score for current game, show this or highscores */}
             </div>
