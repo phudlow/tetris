@@ -33,7 +33,7 @@ class Tetris {
      * @param {Number} [options.dropSpeed] How fast the game piece falls when a drop is initiated.  If 0 is passed, pieces will "hard drop", falling instantly.
      */
     constructor(options) {
-        options.gameSpeed = options.gameSpeed || 500;
+        options.gameSpeed = this.startingGameSpeed = options.gameSpeed || 750;
         options.dropSpeed = typeof options.dropSpeed === 'number' ? options.dropSpeed : this.options.gameSpeed / 10;
 
         /** @member {Object} options Object containing options for the game.  See Constructor */
@@ -60,6 +60,8 @@ class Tetris {
      */
     initialize() {
         const { height = 18, width = 10 } = this.options;
+
+        this.options.gameSpeed = this.startingGameSpeed;
 
         this.placedBoard = this.generateNewBoard(height, width);
         this.currentBoard = this.generateNewBoard(height, width);
@@ -190,7 +192,7 @@ class Tetris {
      */
     emit(event) {
         const args = Array.prototype.splice.call(arguments, 1);
-        this.subscribers[event].forEach(fn => fn.call(null, ...args));
+        this.subscribers[event].forEach(fn => fn(...args));
     }
 
     // ---------------------------------------------------------------------------------------------------------------------

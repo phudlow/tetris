@@ -36,7 +36,8 @@ function ResultsModal(props) {
 const mapStateToProps = state => {
     return {
         gameStatus: state.game.gameStatus,
-        score: state.game.score
+        level: state.game.level,
+        rows: state.game.rows
     };
 };
 

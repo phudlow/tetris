@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { boardChange, gameStatusChange, rowFill, nextPiece } from '../redux/actions';
+import { boardChange, gameStatusChange, rowFill, nextPiece, nextLevel } from '../redux/actions';
 
 import GameBoard from './GameBoard';
 import CountDown from './CountDown';
+import GameInfo from './GameInfo';
 import PiecePreviewBoard from './PiecePreviewBoard';
 import ResultsModal from './ResultsModal';
 import PausedModal from './PausedModal';
@@ -21,19 +22,19 @@ class Game extends Component {
             dropSpeed: 0,
             pieces
         };
-
-        // Start the game once the images have been loaded and canvas mounted
-        this.state = {
-            countDown: null
-        };
-
         this.keybinds = props.keybinds;
+        this.timeBetweenLevels = 20;
+
+        this.state = {
+            gameStartCountDown: null,
+            timeToNextLevel: this.timeBetweenLevels
+        };
 
         this.game = new Tetris(gameOptions);
 
         this.game.on('boardchange', this.props.boardChange);
         this.game.on('nextpiece', this.props.nextPiece);
-        this.game.on('end', this.props.gameStatusChange.bind(null, 'ended'));
+        this.game.on('end', this.end.bind(this));
 
         this.props.boardChange(this.game.currentBoard);
         this.props.nextPiece(this.game.nextPiece.layouts[0]);
@@ -45,9 +46,15 @@ class Game extends Component {
         this.restart = this.restart.bind(this);
         this.resume  = this.resume.bind(this);
     }
+
     componentDidMount() {
         this.start();
     }
+
+    getNextLevelSpeed() {
+        return this.game.options.gameSpeed * 0.75;
+    }
+
     onKeyDown(e) {
         const action = this.keybinds[e.keyCode];
 
@@ -81,14 +88,47 @@ class Game extends Component {
         }
     }
 
+    begin() {
+        this.startLevelTimer();
+        this.game.begin();
+        this.props.gameStatusChange("running");
+    }
+
+    // Set next level (speed increase) timer
+    startLevelTimer() {
+        this.timeToNextLevelTimer = setInterval(() => {
+            let newValue = this.state.timeToNextLevel - 1;
+            if (newValue === -1) {
+                newValue = this.timeBetweenLevels;
+                this.game.options.gameSpeed = this.getNextLevelSpeed();
+                this.props.nextLevel();
+            }
+            this.setState({
+                timeToNextLevel: newValue === -1 ? this.timeBetweenLevels : newValue
+            });
+        }, 1000);
+    }
+
+    stopLevelTimer() {
+        clearInterval(this.timeToNextLevelTimer);
+        this.timeToNextLevelTimer = null;
+    }
+
     pause() {
+        this.stopLevelTimer();
         this.game.stop();
         this.props.gameStatusChange('paused');
     }
 
     resume() {
+        this.startLevelTimer();
         this.game.start();
         this.props.gameStatusChange('running');
+    }
+
+    end() {
+        this.stopLevelTimer();
+        this.props.gameStatusChange('ended');
     }
 
     onKeyUp(e) {
@@ -102,19 +142,18 @@ class Game extends Component {
 
     // Start countdown, tracked in state.  When complete, begin game.
     start() {
-        let countDown = 3;
-        this.setState({ countDown });
+        let gameStartCountDown = 3;
+        this.setState({ gameStartCountDown });
 
-        this.countDownTimer = setInterval(() => {
-            countDown--;
-            if (countDown < 0) {
-                this.game.begin();
-                this.props.gameStatusChange("running");
-                countDown = null;
-                clearInterval(this.countDownTimer);
-                this.countDownTimer = null;
+        this.gameStartCountDownTimer = setInterval(() => {
+            gameStartCountDown--;
+            if (gameStartCountDown < 0) {
+                this.begin();
+                gameStartCountDown = null;
+                clearInterval(this.gameStartCountDownTimer);
+                this.gameStartCountDownTimer = null;
             }
-            this.setState({ countDown });
+            this.setState({ gameStartCountDown });
         }, 1000);
     }
     restart() {
@@ -124,19 +163,21 @@ class Game extends Component {
     }
     render() {
         return (
-            <div id="game" >
+            <div id="game">
                 <div>
-                    <GameBoard countDown={this.state.countDown} />
-                    <CountDown countDown={this.state.countDown} />
+                    <GameBoard/>
+                    <CountDown countDown={this.state. gameStartCountDown} />
                 </div>
-                <div>
-                    <div id="piece-preview-board-label">
+                <div className="right-container">
+                    <GameInfo timeToNextLevel={this.state.timeToNextLevel} />
+                    <div className="piece-preview">
                         Next piece:
+                        <br/><br/>
+                        <div id="piece-preview-board">
+                            <PiecePreviewBoard />
+                        </div>
                     </div>
-                    <br/><br/>
-                    <PiecePreviewBoard />
                 </div>
-
                 <ResultsModal restart={this.restart} />
                 <PausedModal resume={this.resume} />
                 {/* highscores : save to local storage */}
@@ -164,6 +205,7 @@ const mapDispatchToProps = dispatch => {
         gameStatusChange: status => dispatch(gameStatusChange(status)),
         rowFill: rows => dispatch(rowFill(rows)),
         nextPiece: piece => dispatch(nextPiece(piece)),
+        nextLevel: () => dispatch(nextLevel())
     };
 }
 

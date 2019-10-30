@@ -16,6 +16,14 @@ function reducer(state, action) {
                     nextPiece: action.payload
                 }
             }
+        case 'NEXT_LEVEL':
+            return {
+                ...state,
+                game: {
+                    ...state.game,
+                    level: ++state.game.level
+                }
+            }
         case 'GAME_STATUS_CHANGE':
             const newState = {
                 ...state,

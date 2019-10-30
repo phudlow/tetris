@@ -21,7 +21,6 @@
 //////////////////////////
 body {
     display: flex;
-    text-align: center;
     align-items: center;
     justify-content: center;
     font-family: "Captain-Canaveral";
@@ -108,8 +107,12 @@ header {
     }
 }
 #game {
-    & > div:nth-child(1), & > div:nth-child(2) {
-        margin-right: 60px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    margin-right: 50px;
+    & > div:nth-child(1) {
+        margin-right: 50px;
         display: inline-block;
         position: relative;
     }
@@ -120,10 +123,22 @@ header {
         left: 50%;
         transform: translate(-50%, -55%);
     }
-    #piece-preview-board-label{
-        position: relative;
-        top: 50px;
-        left: -20px;
+    .right-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 190px;
+        div, canvas {
+            position: relative;
+        }
+        canvas {
+            left: 20px;
+        }
+    }
+    #gameinfo-container {
+        span {
+            color: orange;
+        }
     }
 }
 canvas {

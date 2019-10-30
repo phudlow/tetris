@@ -12,6 +12,13 @@ export const nextPiece = piece => {
     };
 }
 
+export const nextLevel = piece => {
+    return {
+        type: 'NEXT_LEVEL',
+        payload: piece
+    };
+}
+
 export const gameStatusChange = status => {
     return {
         type: 'GAME_STATUS_CHANGE',
