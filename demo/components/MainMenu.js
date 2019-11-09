@@ -25,7 +25,7 @@ class MainMenu extends Component {
                 <br/>
                 <Button onClick={this.props.showOptions}>Options</Button>
                 <br/>
-                <Button onClick={this.props.newGame}>High Scores</Button>
+                {/* <Button onClick={this.props.newGame}>High Scores</Button> */}
             </div>
         )
     }
