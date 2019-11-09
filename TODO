@@ -1,0 +1,16 @@
+[ ] (Bugish, in library:) Make lose condition: collision on down movement where a piece is above the top
+[ ] Add sounds
+[ ] Add personal high scores saved in local storage
+[ ] Improve results view
+    [ ] If its a high score
+    [ ] Rows
+    [ ] Level
+[ ] Allow hard and soft drop (currently only hard drop)
+[ ] Make the next piece be the true next piece on game start countdown
+[ ] Make menu options selectable with up / down / enter
+[ ] Make a rowfill visual effect
+[ ] Pausing and unpausing shouldn't make the timer restart the second it's on
+[ ] Record game metrics: what level does the speed become too difficult?
+    - Make that level into more levels
+    - Level 6 is where it looks like it gets too fast
+    - Dont slow the game too much, its RUSH
