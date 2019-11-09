@@ -64,12 +64,16 @@ class Header extends Component {
                 <span id="title-colon">:</span>
                 &nbsp;
                 <span id="sirtet-title">
+                    <span>R</span>
+                    <span>U</span>
                     <span>S</span>
+                    <span>H</span>
+                    {/* <span>S</span>
                     <span>I</span>
                     <span>R</span>
                     <span>T</span>
                     <span>E</span>
-                    <span>T</span>
+                    <span>T</span> */}
                 </span>
             </header>
         );

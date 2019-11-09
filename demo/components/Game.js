@@ -32,6 +32,7 @@ class Game extends Component {
 
         this.game = new Tetris(gameOptions);
 
+        this.game.on('rowfill', this.onRowFill.bind(this));
         this.game.on('boardchange', this.props.boardChange);
         this.game.on('nextpiece', this.props.nextPiece);
         this.game.on('end', this.end.bind(this));
@@ -53,6 +54,10 @@ class Game extends Component {
 
     getNextLevelSpeed() {
         return this.game.options.gameSpeed * 0.75;
+    }
+
+    onRowFill(fullRows) {
+        this.props.rowFill(fullRows);
     }
 
     onKeyDown(e) {
@@ -112,6 +117,9 @@ class Game extends Component {
     stopLevelTimer() {
         clearInterval(this.timeToNextLevelTimer);
         this.timeToNextLevelTimer = null;
+        this.setState({
+            timeToNextLevel: this.timeBetweenLevels
+        });
     }
 
     pause() {

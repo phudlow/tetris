@@ -7,8 +7,6 @@ import Button from './Button';
 import Modal from './Modal';
 
 const Score = styled.div`
-    font-family: "Consequences";
-    font-size: 0.65em;
     & > span {
         font-size: 1.5em;
         font-family: "Captain-Canaveral";
@@ -37,6 +35,7 @@ const mapStateToProps = state => {
     return {
         gameStatus: state.game.gameStatus,
         level: state.game.level,
+        score: state.game.score,
         rows: state.game.rows
     };
 };

@@ -12,7 +12,6 @@ class RenderController extends Component {
     }
     render() {
         let activeComponent;
-        console.log(this.props.ui);
 
         switch (this.props.ui) {
             case "main menu":

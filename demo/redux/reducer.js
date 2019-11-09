@@ -41,9 +41,14 @@ function reducer(state, action) {
             }
             return newState;
         case 'ROW_FILL':
+            const score = [40, 100, 300, 1200][action.payload.length - 1]
             return {
                 ...state,
-                rows: state.rows + action.payload
+                game: {
+                    ...state.game,
+                    rows: state.game.rows + action.payload.length,
+                    score: state.game.score + score
+                }
             }
         case 'SHOW_MAIN_MENU':
             return {
