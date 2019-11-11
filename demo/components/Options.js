@@ -51,6 +51,8 @@ class Options extends Component {
                 [action]: keyCode
             }
         });
+
+        target.blur();
     }
 
     getActionOfKeyCode(keyCode) {

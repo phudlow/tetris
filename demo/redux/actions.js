@@ -53,7 +53,6 @@ export const newOptions = options => {
 }
 
 export const newGame = () => {
-    console.log('action newgame');
     return {
         type: 'NEW_GAME'
     };

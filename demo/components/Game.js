@@ -152,6 +152,7 @@ class Game extends Component {
     start() {
         let gameStartCountDown = 3;
         this.setState({ gameStartCountDown });
+        this.game.emit('nextpiece', this.game.currentPiece.layouts[0]);
 
         this.gameStartCountDownTimer = setInterval(() => {
             gameStartCountDown--;
@@ -160,6 +161,7 @@ class Game extends Component {
                 gameStartCountDown = null;
                 clearInterval(this.gameStartCountDownTimer);
                 this.gameStartCountDownTimer = null;
+                this.game.emit('nextpiece', this.game.nextPiece.layouts[0]);
             }
             this.setState({ gameStartCountDown });
         }, 1000);
@@ -188,8 +190,6 @@ class Game extends Component {
                 </div>
                 <ResultsModal restart={this.restart} />
                 <PausedModal resume={this.resume} />
-                {/* highscores : save to local storage */}
-                {/* score: score for current game, show this or highscores */}
             </div>
         );
     }
