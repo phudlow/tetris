@@ -49,18 +49,18 @@ header {
     margin: 0 0 50px 0;
     border-bottom: 1px solid grey;
 
-    #sirtet-title {
+    #letters-title {
         color: orange
     }
 
     // Animated elements:
-    #tetris-title, #sirtet-title > span, #title-colon {
+    #tetris-title, #letters-title > span, #title-colon {
         position: relative;
     }
     #title-colon {
         left: 100vw;
     }
-    #tetris-title, #sirtet-title > span {
+    #tetris-title, #letters-title > span {
         opacity: 0;
     }
 }

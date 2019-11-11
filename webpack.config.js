@@ -19,7 +19,10 @@ const common = {
     module: {
         rules: [
             { test: /\.js$/, use: 'babel-loader' },
-            { test: /.(png|ttf|otf)$/, loader: 'file-loader', options: { outputPath: 'static', name: '[name].[ext]' } }
+            { test: /.(png|ttf|otf|mp3)$/, loader: 'file-loader', options: {
+                outputPath: 'static',
+                name: '[name].[ext]'
+            }}
         ]
     },
     plugins: [

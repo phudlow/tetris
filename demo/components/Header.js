@@ -13,7 +13,7 @@ class Header extends Component {
     componentDidMount() {
         const tetrisTitle = document.getElementById('tetris-title');
         const titleColon = document.getElementById('title-colon');
-        const sirtetLetters = document.getElementById('sirtet-title').querySelectorAll('span');
+        const letters = document.getElementById('letters-title').querySelectorAll('span');
 
         const letterAnimationTime = 0.05;
         const letterOffset = "100px";
@@ -30,8 +30,8 @@ class Header extends Component {
             // Animate TETRIS title colon: Move colon from off-screen right into place
             tl.to(titleColon, 0.8, { left: 0, ease: 'linear' }, "-=1.8"); // 0.79
 
-            // Animate SIRTET: Show and move letters sequentially into place from rotatinge 4 cardinal directions
-            sirtetLetters.forEach((letter, idx) => {
+            // Animate letters: Show and move letters sequentially into place from rotatinge 4 cardinal directions
+            letters.forEach((letter, idx) => {
                 const timeOffset = 1.1 + idx * 0.1;
                 tl.to(letter, letterAnimationTime, { opacity: 1 }, timeOffset);
                 switch (idx % 4) {
@@ -63,17 +63,11 @@ class Header extends Component {
                 <span id="tetris-title">TETRIS</span>
                 <span id="title-colon">:</span>
                 &nbsp;
-                <span id="sirtet-title">
+                <span id="letters-title">
                     <span>R</span>
                     <span>U</span>
                     <span>S</span>
                     <span>H</span>
-                    {/* <span>S</span>
-                    <span>I</span>
-                    <span>R</span>
-                    <span>T</span>
-                    <span>E</span>
-                    <span>T</span> */}
                 </span>
             </header>
         );

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import blocksImg from '../static/block.png';
+
 class Board extends Component {
     constructor(props) {
         super(props);
@@ -11,6 +13,9 @@ class Board extends Component {
         this.boardWidth  = board[0].length;
 
         this.canvas = React.createRef();
+
+        this.blocksImg = document.createElement('img');
+        this.blocksImg.setAttribute('src', blocksImg);
     }
 
     componentDidMount() {
@@ -27,7 +32,7 @@ class Board extends Component {
     updateBoard(currBoard, nextBoard) {
         const ctx = this.canvas.current.getContext('2d');
         const blockSize = this.blockSize;
-        const blocks    = window.blocksImg;
+        const blocks    = this.blocksImg;
         let currValue, nextValue;
 
         for (let i = 0, numRows = nextBoard.length; i < numRows; i++) {
